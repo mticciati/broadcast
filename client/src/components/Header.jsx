@@ -17,8 +17,9 @@ class Header extends Component {
       default:
         return [
           <li key="1"><Link to="/recipients">Recipients</Link></li>,
-          <li key="2"><Link to="/broadcasts">Broadcasts</Link></li>,
-          <li key="3"><a href="/api/logout" className="waves-effect waves-light">Logout</a></li>
+          <li key="2"><Link to="/lists">Lists</Link></li>,
+          <li key="3"><Link to="/broadcasts">Broadcasts</Link></li>,
+          <li key="4"><a href="/api/logout" className="waves-effect waves-light">Logout</a></li>
         ]; 
     }
   }

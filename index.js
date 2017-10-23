@@ -8,6 +8,7 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Recipient');
 require('./models/Broadcast');
+require('./models/List');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
@@ -31,6 +32,7 @@ require('./routes/authRoutes')(app);
 require('./routes/userRoutes')(app);
 require('./routes/recipientRoutes')(app);
 require('./routes/broadcastRoutes')(app);
+require('./routes/listRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
 

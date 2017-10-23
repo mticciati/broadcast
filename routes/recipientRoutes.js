@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 
-const Recipient = mongoose.model('recipients');
+const Recipient = mongoose.model('Recipient');
 
 module.exports = (app) => {
 

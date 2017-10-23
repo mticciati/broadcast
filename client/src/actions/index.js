@@ -29,3 +29,27 @@ export const fetchBroadcasts = () => async dispatch => {
   const res = await axios.get('/api/broadcasts');
   dispatch({type: types.FETCH_BROADCASTS, payload: res.data});
 }
+
+export const saveList = (values) => async dispatch => {
+  const res = await axios.post('/api/lists', values);
+  console.log('from saveList', res);
+  dispatch({type: types.SAVE_LIST, payload: res.data});
+}
+
+export const fetchLists = () => async dispatch => {
+  const res = await axios.get('/api/lists');
+  dispatch({type: types.FETCH_LISTS, payload: res.data});
+}
+
+export const fetchList = (id) => async dispatch => {
+  const res = await axios.get(`/api/lists/${id}`);
+  dispatch({type: types.FETCH_LIST, payload: res.data});
+}
+
+export const setList = (list) => dispatch => {
+  dispatch({type: types.SET_LIST, payload: list});
+}
+
+export const unsetList = () => dispatch => {
+  dispatch({type: types.UNSET_LIST});
+}

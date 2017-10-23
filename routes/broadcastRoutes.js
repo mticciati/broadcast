@@ -5,20 +5,20 @@ const requireLogin = require('../middlewares/requireLogin');
 const twilioClient = require('../services/twilioClient');
 
 
-const Broadcast = mongoose.model('broadcasts');
+const Broadcast = mongoose.model('Broadcast');
 
 module.exports = app => {
 
   app.post('/api/broadcasts', requireLogin, async (req, res) => {
 
     console.log('creating broadcast', req.body);
-
+    let { title, body, totalPositions} = req.body;
     const broadcast = new Broadcast({
       _user: req.user.id,
-      title: req.body.title,
-      body: req.body.body,
-      totalPositions: req.body.totalPositions,
-      openPositions: req.body.totalPositions
+      title,
+      body,
+      totalPositions,
+      openPositions: totalPositions
     });
 
     try {
@@ -50,19 +50,50 @@ module.exports = app => {
 
   app.post('/api/broadcasts/outgoing', requireLogin, async (req, res) => {
     console.log(req.body);
-    const {to, message, test} = req.body;
-    const {twilioNumber} = req.user;
-    if (twilioNumber && twilioNumber !== '') {
-      let messageId = await twilioClient.sendSms(to, message, twilioNumber);
-      console.log('message id returned', messageId);
-    } else {
-      // Send error...
+    const {broadcast_id} = req.body;
+    const {twilioNumber, _id} = req.user;
+    
+    try {
+      let broadcast = await Broadcast.findOne({_id: broadcast_id});
+      if (twilioNumber && twilioNumber !== '') {
+        let messageId = await twilioClient.sendSms(to, message, twilioNumber);
+        console.log('message id returned', messageId);
+        if (messageId) {
+          broadcast.broadcastThreads
+          let updatedBroadcast = broadcast.save();
+        }
+      } else {
+        // Send error...
+      }
+    } catch(err) {
+      console.log('Outgoing error', err);
+      res.send(err);
     }
+    
     res.send({});
   });
 
   app.post('/api/broadcasts/incoming', (req, res) => {
-    console.log(req.body);
+    console.log('body', req.body);
+    console.log('session', req.session);
+    const {From, Body, To} = req.body;
+    const smsCount = req.session.counter || 0;
+    req.session.counter = smsCount + 1;
+
+    // TODO 
+      // parse response
+      // if opt out
+        // find Recipient
+      // else
+        // find Broadcast
+        // update Broadcast.conversation
+        // update status.... 
+
+    const twiml = new MessagingResponse();
+    twiml.message(message);
+
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
   });
 
 };

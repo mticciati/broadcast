@@ -4,7 +4,6 @@ import {reduxForm, Field} from 'redux-form';
 import _ from 'lodash';
 import {createRecipient} from '../../actions';
 
-// import RecipientField from './RecipientField';
 import formFields from './formFields';
 
 function renderFields() {
@@ -27,7 +26,7 @@ function renderFields() {
 }
 
 
-class CreateRecipientForm extends Component {
+class RecipientForm extends Component {
 
   constructor(props) {
     super(props);
@@ -95,9 +94,9 @@ function mapStateToProps({recipient}) {
   return {recipient};
 }
 
-CreateRecipientForm = connect(mapStateToProps, {createRecipient})(CreateRecipientForm);
+RecipientForm = connect(mapStateToProps, {createRecipient})(RecipientForm);
 
 export default reduxForm({
   validate,
   form: 'recipientForm',
-})(CreateRecipientForm);
+})(RecipientForm);

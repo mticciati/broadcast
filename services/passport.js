@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
-const User = mongoose.model('users');
+const User = mongoose.model('User');
 
 passport.serializeUser((user, done) => {
   console.log('serialize user', user);

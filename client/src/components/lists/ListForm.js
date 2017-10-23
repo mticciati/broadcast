@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import _ from 'lodash';
-import {saveBroadcast} from '../../actions';
-import renderFields from '../../utils/renderFields';
+import {saveList} from '../../actions';
 
 import formFields from './formFields';
+import renderFields from '../../utils/renderFields';
 
-class BroadcastForm extends Component {
+class ListForm extends Component {
 
   constructor(props) {
     super(props);
@@ -17,24 +17,23 @@ class BroadcastForm extends Component {
 
   async handleSubmit(values) {
     console.log('values', values);
-    this.props.saveBroadcast(values);
+    this.props.saveList(values);
   }
 
   //TODO update with msg Component
   handleResponse() {
-    const {broadcast} = this.props;
-    if (!broadcast) {
+    const {list} = this.props;
+    if (!list) {
       return;
-    } else if (broadcast.title) {
-      return 'Created '+broadcast.title+'!';
+    } else if (list.name) {
+      return 'Created '+list.name+'!';
     } else {
-      return broadcast;
+      return list;
     }
-
   }
- 
+
   render() {
-    const { submitting, handleSubmit } = this.props;
+    let {submitting, handleSubmit} = this.props;
     return (
       <div>
         {this.handleResponse()}
@@ -55,8 +54,6 @@ class BroadcastForm extends Component {
       </div>
     );
   }
-  
-
 }
 
 function validate(values) {
@@ -71,13 +68,9 @@ function validate(values) {
   return errors;
 }
 
-function mapStateToProps({broadcast}) {
-  return {broadcast};
-}
-
-BroadcastForm = connect(mapStateToProps, {saveBroadcast})(BroadcastForm);
+ListForm = connect(null, {saveList})(ListForm);
 
 export default reduxForm({
-  validate,
-  form: 'broadcastForm',
-})(BroadcastForm);
+  validate, 
+  form: 'listForm'
+})(ListForm);

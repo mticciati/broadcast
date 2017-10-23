@@ -45,4 +45,4 @@ userSchema.pre('save', function (next) {
   })
 });
 
-mongoose.model('users', userSchema);
+mongoose.model('User', userSchema);

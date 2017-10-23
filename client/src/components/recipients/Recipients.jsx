@@ -7,8 +7,7 @@ import * as actions from '../../actions';
 class Recipients extends Component {
 
   componentWillMount() {
-    const {fetchRecipients} = this.props;
-    fetchRecipients();
+    this.props.fetchRecipients();
   }
 
   renderContent() {
@@ -34,7 +33,8 @@ class Recipients extends Component {
 
     return (
       <div>
-        <Link to="/recipients/create">Create</Link>
+        <h3>Recipients</h3>
+        <Link to="/recipients/new">New</Link>
         {this.renderContent()}
       </div>
     );

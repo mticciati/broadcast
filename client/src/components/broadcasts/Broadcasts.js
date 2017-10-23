@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import _ from 'lodash';
 import {fetchBroadcasts} from '../../actions';
 
@@ -41,6 +42,7 @@ class Broadcasts extends Component {
     return (
       <div>
         <h3>Broadcasts</h3>
+        <Link to="/broadcasts/new">New</Link>
         {this.renderContent()}
       </div>
     );
