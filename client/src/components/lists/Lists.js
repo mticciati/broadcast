@@ -14,7 +14,7 @@ class Lists extends Component {
   }
 
   renderContent() {
-    const {lists, list, setList} = this.props;
+    const {lists, list, setList, unsetList} = this.props;
     switch(lists) {
       case null:
         return <li><p>Loading...</p></li>;
@@ -30,27 +30,10 @@ class Lists extends Component {
                   })
                 }
               </ul>
-            )
+            );     
           default: 
-            return (
-              <div>
-                <p>
-                  <a href="" onClick={() => this.props.unsetList()}>Back to Lists</a>
-                </p>
-                <p>
-                  <button 
-                    className="btn waves-effect waves-light" 
-                    type="button" 
-                  >
-                    Add Recipient
-                    <i className="material-icons right">person_add</i>
-                  </button>
-                </p>
-                <List list={list} />
-              </div>
-            )
-        }
-        
+            return <List list={list} unsetList={unsetList} />
+        }    
     }
     
   }
