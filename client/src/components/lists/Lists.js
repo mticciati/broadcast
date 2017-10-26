@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import _ from 'lodash';
-import {fetchLists, setList, unsetList} from '../../actions';
+import {fetchLists, setList} from '../../actions';
 
 import ListItem from './ListItem';
 import List from './List';
@@ -14,7 +14,7 @@ class Lists extends Component {
   }
 
   renderContent() {
-    const {lists, list, setList, unsetList} = this.props;
+    const {lists, list, setList} = this.props;
     switch(lists) {
       case null:
         return <li><p>Loading...</p></li>;
@@ -32,7 +32,7 @@ class Lists extends Component {
               </ul>
             );     
           default: 
-            return <List list={list} unsetList={unsetList} />
+            return <List />
         }    
     }
     
@@ -57,4 +57,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {fetchLists, setList, unsetList})(Lists);
+export default connect(mapStateToProps, {fetchLists, setList})(Lists);

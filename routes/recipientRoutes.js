@@ -8,10 +8,11 @@ module.exports = (app) => {
   app.post('/api/recipients', requireLogin, async (req, res) => {
     console.log('create recipient route', req.body);
     console.log('user.id', req.user.id);
+    const {_id} = req.user;
     try {
       const existingRecipient = await Recipient.findOne({
         phone: req.body.phone,
-        user_id: req.user.id});
+        _user: _id});
 
       if (existingRecipient) {
         console.log('recipient exists!');
@@ -27,7 +28,7 @@ module.exports = (app) => {
           phone: req.body.phone
         });
 
-        recipient._users.push({user_id: req.user.id});
+        recipient._users.push({_user: _id});
         await recipient.save();
         res.send(recipient);
       } catch (err) {
@@ -42,8 +43,16 @@ module.exports = (app) => {
   }); 
 
   app.get('/api/recipients', requireLogin, async (req, res) => {
+    const {_id} = req.user;
+    console.log('get recipients user id ', _id);
     try {
-      const recipients = await Recipient.find({user_id: req.user.id});
+      const recipients = await Recipient.find(
+        {
+          _users: {
+            $elemMatch: {_user: _id}
+          }
+        });
+      console.log('recipients', recipients);
       if (!recipients) {
         console.log('no recipients found');
         return res.send('No recipients yet...');

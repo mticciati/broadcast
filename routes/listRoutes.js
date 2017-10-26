@@ -57,4 +57,20 @@ module.exports = app => {
     }
   });
 
+  app.post('/api/lists/:id/recipients', requireLogin, async (req, res) => {
+    const {id} = req.params;
+    const {_id} = req.user;
+    const {recipients} = req.body;
+    console.log('patch list id', id);
+    try {
+      await Recipient.update({_id: {$in: recipients} },{$addToSet: {_lists: id}});
+      let list = await List.findOneAndUpdate({_id: id}, {$addToSet: {_recipients: {$each: recipients} } });
+      console.log('new list', list);
+      res.send(list);
+    } catch(err) {
+      console.log('err patching list', err);
+      res.status(500).send(err);
+    }
+  });
+
 };

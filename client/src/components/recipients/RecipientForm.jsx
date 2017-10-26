@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import _ from 'lodash';
-import {createRecipient} from '../../actions';
+import {saveRecipient} from '../../actions';
 
 import formFields from './formFields';
 
@@ -36,7 +36,7 @@ class RecipientForm extends Component {
 
   async handleSubmit(values) {
     console.log('values', values);
-    this.props.createRecipient(values);
+    this.props.saveRecipient(values);
   }
 
   //TODO update with msg Component
@@ -94,7 +94,7 @@ function mapStateToProps({recipient}) {
   return {recipient};
 }
 
-RecipientForm = connect(mapStateToProps, {createRecipient})(RecipientForm);
+RecipientForm = connect(mapStateToProps, {saveRecipient})(RecipientForm);
 
 export default reduxForm({
   validate,

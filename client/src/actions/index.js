@@ -7,11 +7,11 @@ export const fetchUser = () => async dispatch => {
   dispatch({type: types.FETCH_USER, payload: res.data});
 };
 
-export const createRecipient = (values) => async dispatch => {
+export const saveRecipient = (values) => async dispatch => {
   console.log('from actions', values);
   const res = await axios.post('/api/recipients', values);
-  console.log('from createRecipient', res);
-  dispatch({type: types.CREATE_RECIPIENT, payload: res.data});
+  console.log('from saveRecipient', res);
+  dispatch({type: types.SAVE_RECIPIENT, payload: res.data});
 }
 
 export const fetchRecipients = () => async dispatch => {
