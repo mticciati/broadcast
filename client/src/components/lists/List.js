@@ -2,8 +2,17 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {unsetList, fetchRecipients} from '../../actions';
 import _ from 'lodash';
+import $ from 'jquery';
+
+import Modal from '../shared/Modal';
+
+// TODO update to only show recipients to add that are not already in the list
 
 class List extends Component {
+
+  componentDidMount() {
+    $('.modal').modal();
+  }
 
   renderContent(recipients) {
     if (recipients.length > 0) {
@@ -12,7 +21,7 @@ class List extends Component {
           {_.map(recipients, (recipient) => {
             return (
               <li key={recipient._id} className="collection-item avatar">
-                <i className="material-icons circle  grey darken-2">person</i>
+                <i className="material-icons circle grey darken-2">person</i>
                 <span className="title">{recipient.firstname+' '+recipient.lastname}</span>
                 <p>{recipient.email}</p>
                 <p>{recipient.phone}</p>
@@ -28,7 +37,7 @@ class List extends Component {
   }
 
   render() {
-    const {list, unsetList, fetchRecipients} = this.props;
+    const {list, unsetList, fetchRecipients, recipients} = this.props;
     return (
       <div>
         <h3>{list.name}</h3>
@@ -37,16 +46,18 @@ class List extends Component {
           <a onClick={() => unsetList()}>Back to lists</a>
         </p>
         <p>
-          <button 
-            className="btn waves-effect waves-light" 
+          <a 
+            href="#modal-list"
+            className="btn waves-effect waves-light modal-trigger" 
             type="button" 
             onClick={() => fetchRecipients()}
           >
             Add Recipients
             <i className="material-icons right">group_add</i>
-          </button>
+          </a>         
         </p>  
         {this.renderContent(list._recipients)}
+        <Modal title="Your Recipients" items={recipients} />
       </div>
     );
   }

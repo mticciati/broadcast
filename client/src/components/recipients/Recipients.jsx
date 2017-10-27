@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import _ from 'lodash';
-import * as actions from '../../actions';
+import {fetchRecipients} from '../../actions';
+
+import RecipientList from './RecipientList';
 
 class Recipients extends Component {
 
@@ -18,13 +19,7 @@ class Recipients extends Component {
       case false:
         return;
       default:
-        return _.map(recipients, (r) => {
-          return (
-            <div key={r._id}>
-              {r.firstname}
-            </div>
-          );
-        });
+        return <RecipientList recipients={recipients} />;
     }
     
   }
@@ -47,4 +42,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, actions)(Recipients);
+export default connect(mapStateToProps, {fetchRecipients})(Recipients);
