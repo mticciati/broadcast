@@ -6,12 +6,14 @@ import broadcastReducer from './broadcastReducer';
 import broadcastsReducer from './broadcastsReducer';
 import listReducer from './listReducer';
 import listsReducer from './listsReducer';
+import filteredRecipientsReducer from './filteredRecipientsReducer';
 import {reducer as formReducer} from 'redux-form';
 
 export default combineReducers({
   auth: authReducer,
   recipient: recipientReducer,
   recipients: recipientsReducer,
+  filteredRecipients: filteredRecipientsReducer,
   broadcast: broadcastReducer,
   broadcasts: broadcastsReducer,
   list: listReducer,

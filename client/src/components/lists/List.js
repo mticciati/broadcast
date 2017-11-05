@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {unsetList, fetchRecipients} from '../../actions';
+import {unsetList} from '../../actions';
 import _ from 'lodash';
 import $ from 'jquery';
 
@@ -12,6 +12,10 @@ class List extends Component {
 
   componentDidMount() {
     $('.modal').modal();
+  }
+
+  componentWillUnmount() {
+    this.props.unsetList();
   }
 
   renderContent(recipients) {
@@ -37,7 +41,7 @@ class List extends Component {
   }
 
   render() {
-    const {list, unsetList, fetchRecipients, recipients} = this.props;
+    const {list, unsetList} = this.props;
     return (
       <div>
         <h3>{list.name}</h3>
@@ -50,14 +54,13 @@ class List extends Component {
             href="#modal-list"
             className="btn waves-effect waves-light modal-trigger" 
             type="button" 
-            onClick={() => fetchRecipients()}
           >
             Add Recipients
             <i className="material-icons right">group_add</i>
           </a>         
         </p>  
         {this.renderContent(list._recipients)}
-        <Modal title="Your Recipients" items={recipients} />
+        <Modal title="Your Recipients" type="recipients" />
       </div>
     );
   }
@@ -70,4 +73,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {unsetList, fetchRecipients})(List);
+export default connect(mapStateToProps, {unsetList})(List);

@@ -20,6 +20,19 @@ export const fetchRecipients = () => async dispatch => {
   dispatch({type: types.FETCH_RECIPIENTS, payload: res.data});
 }
 
+export const filterRecipients = (list, recipients) => {
+  let filteredRecipients;
+  if (!recipients || recipients.length === 0 || !list) {
+    filteredRecipients = recipients;
+  } else {
+    filteredRecipients = recipients.filter(recipient => list._recipients.filter(listRecipient => listRecipient._id === recipient._id).length === 0);
+  }
+  return {
+    type: types.FILTER_RECIPIENTS,
+    payload: filteredRecipients
+  };
+}
+
 export const saveBroadcast = (values) => async dispatch => {
   const res = await axios.post('/api/broadcasts', values);
   dispatch({type: types.SAVE_BROADCAST, payload: res.data});
@@ -52,4 +65,10 @@ export const setList = (list) => dispatch => {
 
 export const unsetList = () => dispatch => {
   dispatch({type: types.UNSET_LIST});
+}
+
+export const addRecipientToList = (list_id, recipient_id) => async dispatch => {
+  const data = {recipients: [recipient_id]};
+  const res = await axios.post(`/api/list/${list_id}/recipients`, data);
+  dispatch({type: types.ADD_RECIPIENT_TO_LIST, payload: res.data});
 }

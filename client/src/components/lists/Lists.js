@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import _ from 'lodash';
-import {fetchLists, setList} from '../../actions';
+import {fetchLists, setList, fetchRecipients} from '../../actions';
 
 import ListItem from './ListItem';
 import List from './List';
@@ -11,6 +11,7 @@ class Lists extends Component {
 
   componentDidMount() {
     this.props.fetchLists();
+    this.props.fetchRecipients();
   }
 
   renderContent() {
@@ -53,8 +54,9 @@ class Lists extends Component {
 function mapStateToProps(state) {
   return {
     lists: state.lists,
-    list: state.list
+    list: state.list,
+    recipients: state.recipients
   };
 }
 
-export default connect(mapStateToProps, {fetchLists, setList})(Lists);
+export default connect(mapStateToProps, {fetchLists, setList, fetchRecipients})(Lists);
