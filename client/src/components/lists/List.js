@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {unsetList} from '../../actions';
-import _ from 'lodash';
+// import _ from 'lodash';
 import $ from 'jquery';
 
 import Modal from '../shared/Modal';
+import RecipientList from '../recipients/RecipientList';
 
 // TODO update to only show recipients to add that are not already in the list
 
@@ -18,27 +19,27 @@ class List extends Component {
     this.props.unsetList();
   }
 
-  renderContent(recipients) {
-    if (recipients.length > 0) {
-      return (
-        <ul className="collection">
-          {_.map(recipients, (recipient) => {
-            return (
-              <li key={recipient._id} className="collection-item avatar">
-                <i className="material-icons circle grey darken-2">person</i>
-                <span className="title">{recipient.firstname+' '+recipient.lastname}</span>
-                <p>{recipient.email}</p>
-                <p>{recipient.phone}</p>
-              </li>
-            )
-          })}
-        </ul>
-      ); 
-    } else {
-      return <p>No Recipients in this List yet!</p>;
-    }
+  // renderContent(recipients) {
+  //   if (recipients.length > 0) {
+  //     return (
+  //       <ul className="collection">
+  //         {_.map(recipients, (recipient) => {
+  //           return (
+  //             <li key={recipient._id} className="collection-item avatar">
+  //               <i className="material-icons circle grey darken-2">person</i>
+  //               <span className="title">{recipient.firstname+' '+recipient.lastname}</span>
+  //               <p>{recipient.email}</p>
+  //               <p>{recipient.phone}</p>
+  //             </li>
+  //           )
+  //         })}
+  //       </ul>
+  //     ); 
+  //   } else {
+  //     return <p>No Recipients in this List yet!</p>;
+  //   }
     
-  }
+  // }
 
   render() {
     const {list, unsetList} = this.props;
@@ -59,7 +60,7 @@ class List extends Component {
             <i className="material-icons right">group_add</i>
           </a>         
         </p>  
-        {this.renderContent(list._recipients)}
+        <RecipientList mode="remove" />
         <Modal title="Your Recipients" type="recipients" />
       </div>
     );
@@ -69,7 +70,7 @@ class List extends Component {
 function mapStateToProps(state) {
   return {
     list: state.list,
-    recipients: state.recipients
+    // recipients: state.recipients
   }
 }
 

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import RecipientListContainer from './RecipientListContainer';
+import RecipientList from './RecipientList';
 
 class Recipients extends Component {
 
   renderContent() {
-    return <RecipientListContainer mode="edit" />
+    return <RecipientList mode="edit" />
   }
 
   render() {

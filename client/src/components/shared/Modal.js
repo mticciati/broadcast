@@ -1,12 +1,12 @@
 import React from 'react';
-import RecipientListContainer from '../recipients/RecipientListContainer';
+import RecipientList from '../recipients/RecipientList';
 
 // TODO make listing items more flexible, not just for Recipients
 
 function renderContent(type) {
   switch(type) {
     case 'recipients':
-      return <RecipientListContainer mode="add" />;
+      return <RecipientList mode="add" />;
     default:
       return;
   }

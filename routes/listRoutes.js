@@ -61,11 +61,40 @@ module.exports = app => {
     const {id} = req.params;
     const {_id} = req.user;
     const {recipients} = req.body;
-    console.log('patch list id', id);
+    console.log('add recipient - patch list id', id);
     try {
       await Recipient.update({_id: {$in: recipients} },{$addToSet: {_lists: id}});
-      let list = await List.findOneAndUpdate({_id: id}, {$addToSet: {_recipients: {$each: recipients} } });
-      // console.log('new list', list);
+      let query = {_id: id};
+      let update = {$addToSet: {_recipients: {$each: recipients} } };
+      let options = {new: true};
+      let list = await List
+        .findOneAndUpdate(query, update, options)
+        .populate('_recipients')
+        .exec();
+      console.log('new list', list);
+      res.send(list);
+    } catch(err) {
+      console.log('err patching list', err);
+      res.status(500).send(err);
+    }
+  });
+
+
+  app.delete('/api/lists/:id/recipients/:recipient_id', requireLogin, async (req, res) => {
+    const {id, recipient_id} = req.params;
+    const {_id} = req.user;
+    console.log('remove recipient - patch list id', id);
+    console.log('recipient_id,', recipient_id);
+    try {
+      await Recipient.update({_id: recipient_id},{$pull: {_lists: id}});
+      let query = {_id: id};
+      let update = {$pull: { _recipients: recipient_id } };
+      let options = {new: true};
+      let list = await List
+        .findOneAndUpdate(query, update, options)
+        .populate('_recipients')
+        .exec();
+      console.log('new list', list);
       res.send(list);
     } catch(err) {
       console.log('err patching list', err);

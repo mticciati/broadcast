@@ -23,6 +23,9 @@ export const fetchRecipients = () => async dispatch => {
 export const filterRecipients = (list, recipients) => {
   let filteredRecipients;
   if (!recipients || recipients.length === 0 || !list) {
+    console.log('no recipients or no list');
+    console.log('list', list);
+    console.log('recipients', recipients);
     filteredRecipients = recipients;
   } else {
     filteredRecipients = recipients.filter(recipient => list._recipients.filter(listRecipient => listRecipient._id === recipient._id).length === 0);
@@ -69,6 +72,11 @@ export const unsetList = () => dispatch => {
 
 export const addRecipientToList = (list_id, recipient_id) => async dispatch => {
   const data = {recipients: [recipient_id]};
-  const res = await axios.post(`/api/list/${list_id}/recipients`, data);
+  const res = await axios.post(`/api/lists/${list_id}/recipients`, data);
   dispatch({type: types.ADD_RECIPIENT_TO_LIST, payload: res.data});
+}
+
+export const removeRecipientFromList = (list_id, recipient_id) => async dispatch => {
+  const res = await axios.delete(`/api/lists/${list_id}/recipients/${recipient_id}`);
+  dispatch({type: types.REMOVE_RECIPIENT_FROM_LIST, payload: res.data});
 }
