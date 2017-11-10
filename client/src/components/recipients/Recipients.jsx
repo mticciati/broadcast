@@ -4,10 +4,6 @@ import RecipientList from './RecipientList';
 
 class Recipients extends Component {
 
-  renderContent() {
-    return <RecipientList mode="edit" />
-  }
-
   render() {
 
     return (
@@ -20,7 +16,7 @@ class Recipients extends Component {
           New Recipient
           <i className="material-icons right">person_add</i>
         </Link>
-        {this.renderContent()}
+        <RecipientList mode="edit" />
       </div>
     );
   }

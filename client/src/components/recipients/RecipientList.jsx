@@ -10,29 +10,37 @@ class RecipientList extends Component {
 
   async componentDidMount() {
     await this.props.fetchRecipients();
-    const {recipients, list} = this.props;
-    this.props.filterRecipients(list, recipients);
+    const {recipients, mode} = this.props;
+    if (mode === 'add' || mode === 'remove') {
+      const {list} = this.props;
+      this.props.filterRecipients(list, recipients);
+    }
     console.log('rendered');
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {recipients, list} = this.props;
-    if (prevProps.list._recipients.length !== list._recipients.length) {
-      this.props.filterRecipients(list, recipients);
-    } 
+    if (list) {
+      if (prevProps.list._recipients.length !== list._recipients.length) {
+        this.props.filterRecipients(list, recipients);
+      } 
+    }   
   }
 
-  handleRecipientAction(list_id, recipient_id) {
+  handleRecipientAction(recipient_id) {
     const {mode} = this.props;
+    let list;
     switch(mode) {
       case 'add':
-        this.props.addRecipientToList(list_id, recipient_id);
+        list = this.props.list;
+        this.props.addRecipientToList(list._id, recipient_id);
         break;
       case 'edit':
         console.log(mode);
         break;
       case 'remove':
-        this.props.removeRecipientFromList(list_id, recipient_id);
+        list = this.props.list;
+        this.props.removeRecipientFromList(list._id, recipient_id);
         break;
       default:
         console.log('need recipient action');
@@ -51,19 +59,21 @@ class RecipientList extends Component {
       case 'remove':
         recipientsToList = list._recipients;
         break;
+      case 'edit':
       default:
+      console.log('edit mode render');
         recipientsToList = recipients;
         break;
     }
-    switch(recipientsToList.length) {
+    switch(recipientsToList) {
       case null:
       case false:
       console.log('null or false recipientsToList');
         return;
-      case 0:
-      console.log('empty recipientsToList');
-        return <p>add more recipients!</p>;
       default:
+        if (recipients.length === 0) {
+          return <p>add more recipients!</p>;
+        }
         return (
           <ul className="collection">
             {_.map(recipientsToList, (recipient) => {
@@ -75,7 +85,7 @@ class RecipientList extends Component {
                  <p>{recipient.phone}</p>
                  <a 
                    className="btn-floating btn-large waves-effect waves-light red secondary-content" 
-                   onClick={() => this.handleRecipientAction(list._id, recipient._id)}   
+                   onClick={() => this.handleRecipientAction(recipient._id)}   
                  >
                    <i className="material-icons">{mode}</i>
                  </a>
