@@ -1,12 +1,21 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+// import {Link} from 'react-router-dom';
 import _ from 'lodash';
 
-import {fetchRecipients, filterRecipients, addRecipientToList, removeRecipientFromList} from '../../actions';
-// import RecipientList from './RecipientList';
+import * as actions from '../../actions';
 
 
 class RecipientList extends Component {
+
+  static propTypes = {
+    mode: PropTypes.string.isRequired
+  }
+
+  static defaultProps = {
+    mode: 'edit'
+  }
 
   async componentDidMount() {
     await this.props.fetchRecipients();
@@ -27,20 +36,20 @@ class RecipientList extends Component {
     }   
   }
 
-  handleRecipientAction(recipient_id) {
+  handleRecipientAction(recipient) {
     const {mode} = this.props;
     let list;
     switch(mode) {
       case 'add':
         list = this.props.list;
-        this.props.addRecipientToList(list._id, recipient_id);
-        break;
-      case 'edit':
-        console.log(mode);
+        this.props.addRecipientToList(list._id, recipient._id);
         break;
       case 'remove':
         list = this.props.list;
-        this.props.removeRecipientFromList(list._id, recipient_id);
+        this.props.removeRecipientFromList(list._id, recipient._id);
+        break;
+      case 'edit':
+        this.props.setRecipient(recipient);
         break;
       default:
         console.log('need recipient action');
@@ -48,6 +57,34 @@ class RecipientList extends Component {
     } 
     
   }
+
+  // renderAction(recipient_id) {
+  //   const {mode} = this.props;
+  //   switch(mode) {
+  //     case 'add':
+  //     case 'remove':
+  //       return (
+  //         <a 
+  //           className="btn-floating btn-large waves-effect waves-light red secondary-content" 
+  //           onClick={() => this.handleRecipientAction(recipient_id)}   
+  //         >
+  //          <i className="material-icons">{mode}</i>
+  //        </a>
+  //       );
+  //     case 'edit':
+  //       return (
+  //         <Link 
+  //           className="btn-floating btn-large waves-effect waves-light red secondary-content" 
+  //           to={`/recipients/${recipient_id}`}   
+  //         >
+  //          <i className="material-icons">{mode}</i>
+  //        </Link>
+  //       );
+  //     default:
+  //       console.log('need action');
+  //       break;
+  //   }
+  // }
 
   renderContent() {
     const {mode, filteredRecipients, list, recipients} = this.props;
@@ -61,7 +98,6 @@ class RecipientList extends Component {
         break;
       case 'edit':
       default:
-      console.log('edit mode render');
         recipientsToList = recipients;
         break;
     }
@@ -84,11 +120,11 @@ class RecipientList extends Component {
                  <p>{recipient.email}</p>
                  <p>{recipient.phone}</p>
                  <a 
-                   className="btn-floating btn-large waves-effect waves-light red secondary-content" 
-                   onClick={() => this.handleRecipientAction(recipient._id)}   
-                 >
+                  className="btn-floating btn-large waves-effect waves-light red secondary-content" 
+                  onClick={() => this.handleRecipientAction(recipient)}   
+                  >
                    <i className="material-icons">{mode}</i>
-                 </a>
+                </a>                 
                </li>
              );
             })}
@@ -110,4 +146,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {fetchRecipients, filterRecipients, addRecipientToList, removeRecipientFromList})(RecipientList);
+export default connect(mapStateToProps, actions)(RecipientList);

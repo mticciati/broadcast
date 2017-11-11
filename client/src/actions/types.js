@@ -2,8 +2,11 @@
 export const FETCH_USER = 'FETCH_USER';
 
 //Recipients
-export const SAVE_RECIPIENT = 'CREATE_RECIPIENT';
+export const SAVE_RECIPIENT = 'SAVE_RECIPIENT';
+export const UPDATE_RECIPIENT = 'UPDATE_RECIPIENT';
 export const FETCH_RECIPIENTS = 'FETCH_RECIPIENTS';
+export const SET_RECIPIENT = 'SET_RECIPIENT';
+export const UNSET_RECIPIENT = 'UNSET_RECIPIENT';
 
 //Broadcasts
 export const SAVE_BROADCAST = 'SAVE_BROADCAST';

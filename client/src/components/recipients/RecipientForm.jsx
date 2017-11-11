@@ -1,30 +1,11 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import _ from 'lodash';
-import {saveRecipient} from '../../actions';
+import {unsetRecipient, saveRecipient, updateRecipient} from '../../actions';
 
 import formFields from './formFields';
-
-function renderFields() {
- return _.map(formFields, ({label, name, type, required}) => {
-    return (
-      <div key={name}>
-        <label>{label} {required && '*'}</label>
-        <Field 
-          key={name} 
-          type="text" 
-          required={required} 
-          label={label} 
-          name={name} 
-          component="input" 
-          style={{marginBottom: '5px'}} />
-        <div className="red-text" style={{marginBottom: '20px'}}></div>
-    </div>
-    );
-  });
-}
-
 
 class RecipientForm extends Component {
 
@@ -34,18 +15,66 @@ class RecipientForm extends Component {
     this.handleResponse = this.handleResponse.bind(this);
   }
 
-  async handleSubmit(values) {
+  //TODO static require handleSubmit
+  static propTypes = {
+    mode: PropTypes.string.isRequired
+  };
+
+  static defaultProps = {
+    mode: 'new'
+  };
+
+  componentWillUnmount() {
+    this.props.unsetRecipient();
+  }
+  //TODO componentWillReceiveProps(nextProps) ?
+
+  renderFields() {
+    return _.map(formFields, ({label, name, type, required}) => {
+      return (
+        <div key={name}>
+          <label>{label} {required && '*'}</label>
+          <Field 
+            key={name} 
+            type="text" 
+            required={required} 
+            label={label} 
+            name={name} 
+            component="input" 
+            style={{marginBottom: '5px'}} />
+          <div className="red-text" style={{marginBottom: '20px'}}></div>
+      </div>
+      );
+    });
+  }
+
+
+  handleSubmit(values) {
     console.log('values', values);
-    this.props.saveRecipient(values);
+    const {mode, recipient} = this.props;
+    switch(mode) {
+      case 'new':
+        this.props.saveRecipient(values);
+        break;
+      case 'edit':
+        console.log('trying to update');
+        this.props.updateRecipient(values, recipient._id);
+        break;
+      default: 
+        console.log('need mode');
+        break;
+    }
+    
   }
 
   //TODO update with msg Component
+  //TODO update for save and edit
   handleResponse() {
     const {recipient} = this.props;
     if (!recipient) {
       return;
     } else if (recipient.firstname) {
-      return 'Created '+recipient.firstname+'!';
+      return recipient.firstname;
     } else {
       return recipient;
     }
@@ -53,12 +82,12 @@ class RecipientForm extends Component {
   }
  
   render() {
-    const { submitting, handleSubmit } = this.props;
+    const { submitting, handleSubmit} = this.props;
     return (
       <div>
         {this.handleResponse()}
         <form onSubmit={handleSubmit(this.handleSubmit)}>
-          {renderFields()}
+          {this.renderFields()}
           <div>
             <button 
               className="btn waves-effect waves-light right" 
@@ -66,7 +95,7 @@ class RecipientForm extends Component {
               name="action"
               disabled={submitting}
             >
-              Create
+              Save
               <i className="material-icons right">arrow_forward</i>
             </button>
           </div>
@@ -90,11 +119,7 @@ function validate(values) {
   return errors;
 }
 
-function mapStateToProps({recipient}) {
-  return {recipient};
-}
-
-RecipientForm = connect(mapStateToProps, {saveRecipient})(RecipientForm);
+RecipientForm = connect(null, {unsetRecipient, saveRecipient, updateRecipient})(RecipientForm);
 
 export default reduxForm({
   validate,

@@ -70,4 +70,23 @@ module.exports = (app) => {
 
   });
 
+  app.patch('/api/recipients/:id', requireLogin, async (req, res) => {
+    const {id} = req.params;
+    const {_id} = req.user;
+    const {firstname, lastname, email, phone} = req.body;
+    console.log('patch Recipient', id);
+    console.log('new values', firstname, lastname, email, phone);
+    try {
+      let query = {_id: id};
+      let update = {$set: {firstname, lastname, email, phone}};
+      let options = {new: true};
+      let recipient = await Recipient.findOneAndUpdate(query, update, options).exec();
+      console.log('updated recipient', recipient);
+      res.send(recipient);
+    } catch(err) {
+      console.log('patch recipient error', err);
+      res.status(500).send(err);
+    }
+  });
+
 };

@@ -7,8 +7,6 @@ import $ from 'jquery';
 import Modal from '../shared/Modal';
 import RecipientList from '../recipients/RecipientList';
 
-// TODO update to only show recipients to add that are not already in the list
-
 class List extends Component {
 
   componentDidMount() {
@@ -18,28 +16,6 @@ class List extends Component {
   componentWillUnmount() {
     this.props.unsetList();
   }
-
-  // renderContent(recipients) {
-  //   if (recipients.length > 0) {
-  //     return (
-  //       <ul className="collection">
-  //         {_.map(recipients, (recipient) => {
-  //           return (
-  //             <li key={recipient._id} className="collection-item avatar">
-  //               <i className="material-icons circle grey darken-2">person</i>
-  //               <span className="title">{recipient.firstname+' '+recipient.lastname}</span>
-  //               <p>{recipient.email}</p>
-  //               <p>{recipient.phone}</p>
-  //             </li>
-  //           )
-  //         })}
-  //       </ul>
-  //     ); 
-  //   } else {
-  //     return <p>No Recipients in this List yet!</p>;
-  //   }
-    
-  // }
 
   render() {
     const {list, unsetList} = this.props;
@@ -69,8 +45,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   return {
-    list: state.list,
-    // recipients: state.recipients
+    list: state.list
   }
 }
 

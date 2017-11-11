@@ -14,6 +14,13 @@ export const saveRecipient = (values) => async dispatch => {
   dispatch({type: types.SAVE_RECIPIENT, payload: res.data});
 }
 
+export const updateRecipient = (values, recipient_id) => async dispatch => {
+  console.log('from actions', values);
+  const res = await axios.patch(`/api/recipients/${recipient_id}`, values);
+  console.log('from updateRecipient', res);
+  dispatch({type: types.UPDATE_RECIPIENT, payload: res.data});
+}
+
 export const fetchRecipients = () => async dispatch => {
   const res = await axios.get('/api/recipients');
   console.log('from fetch recipients', res);
@@ -34,6 +41,14 @@ export const filterRecipients = (list, recipients) => {
     type: types.FILTER_RECIPIENTS,
     payload: filteredRecipients
   };
+}
+
+export const setRecipient = (recipient) => dispatch => {
+  dispatch({type: types.SET_RECIPIENT, payload: recipient});
+}
+
+export const unsetRecipient = () => dispatch => {
+  dispatch({type: types.UNSET_RECIPIENT});
 }
 
 export const saveBroadcast = (values) => async dispatch => {
