@@ -81,6 +81,22 @@ export const setList = (list) => dispatch => {
   dispatch({type: types.SET_LIST, payload: list});
 }
 
+export const filterLists = (lists, broadcastLists) => {
+  let filteredLists;
+  if (!broadcastLists || broadcastLists.length === 0 || !lists) {
+    console.log('no recipients or no list');
+    console.log('lists', lists);
+    console.log('broadcastLists', broadcastLists);
+    filteredLists = lists;
+  } else {
+    filteredLists = lists.filter(list => broadcastLists.filter(broadcastList => broadcastList._id === list._id).length === 0);
+  }
+  return {
+    type: types.FILTER_LISTS,
+    payload: filteredLists
+  };
+}
+
 export const unsetList = () => dispatch => {
   dispatch({type: types.UNSET_LIST});
 }
@@ -94,4 +110,18 @@ export const addRecipientToList = (list_id, recipient_id) => async dispatch => {
 export const removeRecipientFromList = (list_id, recipient_id) => async dispatch => {
   const res = await axios.delete(`/api/lists/${list_id}/recipients/${recipient_id}`);
   dispatch({type: types.REMOVE_RECIPIENT_FROM_LIST, payload: res.data});
+}
+
+export const addListToBroadcast = (list) => dispatch => {
+  console.log('list', list);
+  dispatch({type: types.ADD_LIST_TO_BROADCAST, payload: list._id});
+}
+
+export const removeListFromBroadcast = (list) => dispatch => {
+  console.log('list', list);
+  dispatch({type: types.REMOVE_LIST_FROM_BROADCAST, payload: list._id});
+}
+
+export const unsetBroadcastList = () => dispatch => {
+  dispatch({type: types.UNSET_BROADCAST_LISTS});
 }

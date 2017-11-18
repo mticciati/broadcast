@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const conversationSchema = new Schema({
-  body: {type: String, required: true},
-  created_at: {type: Date, default: Date.now()}
-});
-
 const broadcastThreadSchema = new Schema({
+  _broadcast: {type: Schema.ObjectId, ref: 'Broadcast', required: true},
+  _user: {type: Schema.ObjectId, ref: 'User', required: true},
   _recipient: {type: Schema.ObjectId, ref: 'Recipient', required: true},
   status: {type: String, default: 'Pending'},
-  conversation: [conversationSchema]
+  _messages: [{type: Schema.ObjectId, ref: 'Message'}]
 });
 
-// mongoose.model('broadcastThreads', broadcastThreadSchema);
-module.exports = broadcastThreadSchema;
+mongoose.model('BroadcastThread', broadcastThreadSchema);

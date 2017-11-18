@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {unsetList} from '../../actions';
-// import _ from 'lodash';
 import $ from 'jquery';
 
 import Modal from '../shared/Modal';
@@ -27,21 +26,21 @@ class List extends Component {
           <a onClick={() => unsetList()}>Back to lists</a>
         </p>
         <p>
-          <a 
+          <a
             href="#modal-list"
-            className="btn waves-effect waves-light modal-trigger" 
-            type="button" 
+            className="btn waves-effect waves-light modal-trigger"
+            type="button"
           >
             Add Recipients
             <i className="material-icons right">group_add</i>
-          </a>         
-        </p>  
+          </a>
+        </p>
         <RecipientList mode="remove" />
         <Modal title="Your Recipients" type="recipients" />
       </div>
     );
   }
-} 
+}
 
 function mapStateToProps(state) {
   return {

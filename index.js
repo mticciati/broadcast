@@ -7,8 +7,10 @@ const flash = require('connect-flash');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Recipient');
-require('./models/Broadcast');
 require('./models/List');
+require('./models/BroadcastThread');
+require('./models/Message');
+require('./models/Broadcast');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);

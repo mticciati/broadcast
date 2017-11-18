@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import _ from 'lodash';
 import {fetchBroadcasts} from '../../actions';
+
+import BroadcastList from './BroadcastList';
 
 class Broadcasts extends Component {
 
@@ -18,23 +19,9 @@ class Broadcasts extends Component {
       case false:
         return;
       default:
-        return _.map(broadcasts, (broadcast) => {
-          return (
-            <div key={broadcast._id} className="card blue-grey darken-1">
-              <div className="card-content white-text">
-                <span className="card-title">{broadcast.title}</span>
-                <p>{broadcast.body}</p>
-                <p>Sent on: {new Date(broadcast.created_at).toLocaleDateString()}</p>
-              </div>
-              <div className="card-action">
-                <a>Positions: {broadcast.totalPositions}</a>
-                <a>Positions Left: {broadcast.openPositions}</a>
-              </div>
-            </div>
-          );
-        });
+        return <BroadcastList broadcasts={broadcasts} />
     }
-    
+
   }
 
   render() {
@@ -42,7 +29,13 @@ class Broadcasts extends Component {
     return (
       <div>
         <h3>Broadcasts</h3>
-        <Link to="/broadcasts/new">New</Link>
+        <Link
+          to="/broadcasts/new"
+          className="btn waves-effect waves-light"
+        >
+          New Broadcast
+          <i className="material-icons right">forward</i>
+        </Link>
         {this.renderContent()}
       </div>
     );

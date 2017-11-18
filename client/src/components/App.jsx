@@ -6,11 +6,11 @@ import * as actions from '../actions';
 import Header from './Header';
 import Signup from './auth/Signup';
 import Login from './auth/Login';
-import Recipients from './recipients/Recipients';
+import RecipientsContainer from './recipients/RecipientsContainer';
 import RecipientForm from './recipients/RecipientForm';
 import Broadcasts from './broadcasts/Broadcasts';
 import BroadcastForm from './broadcasts/BroadcastForm';
-import Lists from './lists/Lists';
+import ListsContainer from './lists/ListsContainer';
 import ListForm from './lists/ListForm';
 
 //testing
@@ -46,11 +46,11 @@ class App extends Component {
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/dashboard" component={Dashboard} />
-              <Route exact path="/recipients" component={Recipients} />
+              <Route exact path="/recipients" component={RecipientsContainer} />
               <Route exact path="/recipients/new" component={RecipientForm} />
               <Route exact path="/broadcasts" component={Broadcasts} />
               <Route exact path="/broadcasts/new" component={BroadcastForm} />
-              <Route exact path="/lists" component={Lists} />
+              <Route exact path="/lists" component={ListsContainer} />
               <Route exact path="/lists/new" component={ListForm} />
             </div>
           </div>

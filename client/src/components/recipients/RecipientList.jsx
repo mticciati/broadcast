@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-// import {Link} from 'react-router-dom';
 import _ from 'lodash';
 
 import * as actions from '../../actions';
+import RecipientListItemAdd from './RecipientListItemAdd';
+import RecipientListItemEdit from './RecipientListItemEdit';
+import RecipientListItemRemove from './RecipientListItemRemove';
 
 
 class RecipientList extends Component {
@@ -24,7 +26,6 @@ class RecipientList extends Component {
       const {list} = this.props;
       this.props.filterRecipients(list, recipients);
     }
-    console.log('rendered');
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -32,79 +33,64 @@ class RecipientList extends Component {
     if (list) {
       if (prevProps.list._recipients.length !== list._recipients.length) {
         this.props.filterRecipients(list, recipients);
-      } 
-    }   
+      }
+    }
   }
 
-  handleRecipientAction(recipient) {
-    const {mode} = this.props;
-    let list;
+  renderList() {
+    const {
+      addRecipientToList,
+      removeRecipientFromList,
+      setRecipient,
+      filteredRecipients,
+      list,
+      recipients,
+      mode
+    } = this.props;
     switch(mode) {
       case 'add':
-        list = this.props.list;
-        this.props.addRecipientToList(list._id, recipient._id);
-        break;
+        return _.map(filteredRecipients, (recipient) => {
+          return (
+            <RecipientListItemAdd
+             key={recipient._id}
+             recipient={recipient}
+             onAction={addRecipientToList}
+             list_id={list._id}
+           />
+         );
+        })
       case 'remove':
-        list = this.props.list;
-        this.props.removeRecipientFromList(list._id, recipient._id);
-        break;
+        return _.map(list._recipients, (recipient) => {
+          return (
+            <RecipientListItemRemove
+             key={recipient._id}
+             recipient={recipient}
+             onAction={removeRecipientFromList}
+             list_id={list._id}
+           />
+         );
+        })
       case 'edit':
-        this.props.setRecipient(recipient);
-        break;
       default:
-        console.log('need recipient action');
-        break;
-    } 
-    
+        return _.map(recipients, (recipient) => {
+          return (
+            <RecipientListItemEdit
+             key={recipient._id}
+             recipient={recipient}
+             onAction={setRecipient}
+           />
+         );
+        })
+     }
   }
 
-  // renderAction(recipient_id) {
-  //   const {mode} = this.props;
-  //   switch(mode) {
-  //     case 'add':
-  //     case 'remove':
-  //       return (
-  //         <a 
-  //           className="btn-floating btn-large waves-effect waves-light red secondary-content" 
-  //           onClick={() => this.handleRecipientAction(recipient_id)}   
-  //         >
-  //          <i className="material-icons">{mode}</i>
-  //        </a>
-  //       );
-  //     case 'edit':
-  //       return (
-  //         <Link 
-  //           className="btn-floating btn-large waves-effect waves-light red secondary-content" 
-  //           to={`/recipients/${recipient_id}`}   
-  //         >
-  //          <i className="material-icons">{mode}</i>
-  //        </Link>
-  //       );
-  //     default:
-  //       console.log('need action');
-  //       break;
-  //   }
-  // }
-
   renderContent() {
-    const {mode, filteredRecipients, list, recipients} = this.props;
-    let recipientsToList;
-    switch (mode) {
-      case 'add':
-        recipientsToList = filteredRecipients;
-        break;
-      case 'remove':
-        recipientsToList = list._recipients;
-        break;
-      case 'edit':
-      default:
-        recipientsToList = recipients;
-        break;
-    }
-    switch(recipientsToList) {
+    const {recipients} = this.props;
+    switch(recipients) {
       case null:
+        return <li><p>Loading...</p></li>;
       case false:
-      console.log('null or false recipientsToList');
+        console.log('null or false recipients');
         return;
       default:
         if (recipients.length === 0) {
@@ -112,22 +98,7 @@ class RecipientList extends Component {
         }
         return (
           <ul className="collection">
-            {_.map(recipientsToList, (recipient) => {
-             return (
-               <li key={recipient._id} className="collection-item avatar">
-                 <i className="material-icons circle grey darken-2">person</i>
-                 <span className="title">{recipient.firstname+' '+recipient.lastname}</span>
-                 <p>{recipient.email}</p>
-                 <p>{recipient.phone}</p>
-                 <a 
-                  className="btn-floating btn-large waves-effect waves-light red secondary-content" 
-                  onClick={() => this.handleRecipientAction(recipient)}   
-                  >
-                   <i className="material-icons">{mode}</i>
-                </a>                 
-               </li>
-             );
-            })}
+            {this.renderList()}
           </ul>
         );
     }

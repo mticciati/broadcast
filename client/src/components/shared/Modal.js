@@ -1,5 +1,6 @@
 import React from 'react';
 import RecipientList from '../recipients/RecipientList';
+import ListList from '../lists/ListList';
 
 // TODO make listing items more flexible, not just for Recipients
 
@@ -7,10 +8,12 @@ function renderContent(type) {
   switch(type) {
     case 'recipients':
       return <RecipientList mode="add" />;
+    case 'lists':
+      return <ListList mode="add" />
     default:
       return;
   }
-  
+
 }
 
 const Modal = ({title, type}) => (

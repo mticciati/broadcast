@@ -7,7 +7,7 @@ import RecipientForm from './RecipientForm';
 
 
 
-class Recipients extends Component {
+class RecipientsContainer extends Component {
 
   renderContent() {
     const {recipient} = this.props;
@@ -19,12 +19,12 @@ class Recipients extends Component {
         phone: recipient.phone
       }
       return <RecipientForm mode="edit" recipient={recipient} initialValues={initialValues} />;
-    } 
+    }
     return (
       <div>
         <h3>Recipients</h3>
-        <Link 
-          to="/recipients/new" 
+        <Link
+          to="/recipients/new"
           className="btn waves-effect waves-light"
         >
           New Recipient
@@ -51,4 +51,4 @@ function mapStateToProps (state) {
   };
 }
 
-export default connect(mapStateToProps, null)(Recipients);
+export default connect(mapStateToProps, null)(RecipientsContainer);

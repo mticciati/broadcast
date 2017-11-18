@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import _ from 'lodash';
+import $ from 'jquery';
 import {saveBroadcast} from '../../actions';
 import renderFields from '../../utils/renderFields';
 
+import Modal from '../shared/Modal';
 import formFields from './formFields';
 
 class BroadcastForm extends Component {
@@ -13,6 +15,10 @@ class BroadcastForm extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleResponse = this.handleResponse.bind(this);
+  }
+
+  componentDidMount() {
+    $('.modal').modal();
   }
 
   async handleSubmit(values) {
@@ -32,30 +38,42 @@ class BroadcastForm extends Component {
     }
 
   }
- 
+
   render() {
-    const { submitting, handleSubmit } = this.props;
+    const { submitting, handleSubmit, broadcastLists } = this.props;
     return (
       <div>
         {this.handleResponse()}
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           {renderFields(formFields)}
           <div>
-            <button 
-              className="btn waves-effect waves-light right" 
-              type="submit" 
+            <a
+              href="#modal-list"
+              className="btn waves-effect waves-light modal-trigger"
+              type="button"
+            >
+              Choose List
+              <i className="material-icons right">playlist_add</i>
+            </a>
+          </div>
+          <div>{_.map((broadcastLists), broadcastList => <p>{broadcastList.title}</p>)}</div>
+          <div>
+            <button
+              className="btn waves-effect waves-light right"
+              type="submit"
               name="action"
               disabled={submitting}
             >
-              Create
-              <i className="material-icons right">arrow_forward</i>
+              Send
+              <i className="material-icons right">forward</i>
             </button>
           </div>
         </form>
+        <Modal title="Your Lists" type="lists" />
       </div>
     );
   }
-  
+
 
 }
 
@@ -71,8 +89,11 @@ function validate(values) {
   return errors;
 }
 
-function mapStateToProps({broadcast}) {
-  return {broadcast};
+function mapStateToProps(state) {
+  return {
+    broadcast: state.broadcast,
+    broadcastLists: state.broadcastLists
+  };
 }
 
 BroadcastForm = connect(mapStateToProps, {saveBroadcast})(BroadcastForm);
