@@ -13,9 +13,7 @@ import {
 } from '../../actions';
 
 import List from './List';
-import ListItemAdd from './ListItemAdd';
-import ListItemRemove from './ListItemRemove';
-import ListItemEdit from './ListItemEdit';
+import ListItem from './ListItem';
 
 class ListList extends Component {
 
@@ -65,20 +63,22 @@ class ListList extends Component {
       case 'add':
         return _.map(filteredLists, (list) => {
           return (
-            <ListItemAdd
+            <ListItem
              key={list._id}
              list={list}
              onAction={addListToBroadcast}
+             mode={mode}
            />
          );
         })
       case 'remove':
         return _.map(broadcastLists, (list) => {
           return (
-            <ListItemRemove
+            <ListItem
              key={list._id}
              list={list}
              onAction={removeListFromBroadcast}
+             mode={mode}
            />
          );
         })
@@ -86,10 +86,11 @@ class ListList extends Component {
       default:
         return _.map(lists, (list) => {
           return (
-            <ListItemEdit
+            <ListItem
              key={list._id}
              list={list}
              onAction={setList}
+             mode={mode}
            />
          );
         })

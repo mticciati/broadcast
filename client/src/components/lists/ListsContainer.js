@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import ListList from './ListList';
 import ListForm from './ListForm';
+import List from './List';
 
 
 
@@ -16,7 +17,12 @@ class ListsContainer extends Component {
         name: list.name,
         description: list.description
       }
-      return <ListForm mode="edit" list={list} initialValues={initialValues} />;
+      return (
+        <div>
+          <ListForm mode="edit" list={list} initialValues={initialValues} />
+          <List />
+        </div>
+      );
     }
     return (
       <div>
@@ -25,8 +31,8 @@ class ListsContainer extends Component {
           to="/lists/new"
           className="btn waves-effect waves-light"
         >
-          New Recipient
-          <i className="material-icons right">person_add</i>
+          New List
+          <i className="material-icons right">playlist_add</i>
         </Link>
         <ListList mode="edit" />
       </div>

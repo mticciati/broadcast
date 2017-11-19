@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ListItemEdit = ({list, onAction}) => (
+const ListItem = ({list, onAction, mode}) => (
   <li className="collection-item avatar hoverable">
     <i className="material-icons circle  grey darken-2">view_list</i>
     <span className="title">{list.name}</span>
@@ -10,9 +10,9 @@ const ListItemEdit = ({list, onAction}) => (
       className="btn-floating btn-large waves-effect waves-light red secondary-content"
       onClick={() => onAction(list)}
     >
-      <i className="material-icons">edit</i>
+      <i className="material-icons">{mode}</i>
     </a>
   </li>
 );
 
-export default ListItemEdit;
+export default ListItem;

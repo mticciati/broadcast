@@ -14,6 +14,7 @@ export const FETCH_BROADCASTS = 'FETCH_BROADCASTS';
 
 //Lists
 export const SAVE_LIST = 'SAVE_LIST';
+export const UPDATE_LIST = 'UPDATE_LIST';
 export const FETCH_LISTS = 'FETCH_LISTS';
 export const FETCH_LIST = 'FETCH_LIST';
 export const SET_LIST = 'SET_LIST';

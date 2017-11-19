@@ -67,6 +67,13 @@ export const saveList = (values) => async dispatch => {
   dispatch({type: types.SAVE_LIST, payload: res.data});
 }
 
+export const updateList = (values, list_id) => async dispatch => {
+  console.log('from actions', values);
+  const res = await axios.patch(`/api/lists/${list_id}`, values);
+  console.log('from updateList', res);
+  dispatch({type: types.UPDATE_LIST, payload: res.data});
+}
+
 export const fetchLists = () => async dispatch => {
   const res = await axios.get('/api/lists');
   dispatch({type: types.FETCH_LISTS, payload: res.data});

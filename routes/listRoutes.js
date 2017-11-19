@@ -23,7 +23,7 @@ module.exports = app => {
     //TODO validate
     list = new List({
       _user: req.user._id,
-      name, 
+      name,
       description
     });
 
@@ -36,12 +36,32 @@ module.exports = app => {
     }
   });
 
+  app.patch('/api/lists/:id', requireLogin, async (req, res) => {
+    const {id} = req.params;
+    const {_id} = req.user;
+    const {name, description} = req.body;
+    try {
+      let query = {_id: id, _user: _id};
+      let update = {$set: {name, description}};
+      let options = {new: true};
+      let list = await List
+        .findOneAndUpdate(query, update, options)
+        .populate('_recipients')
+        .exec();
+      console.log('updated list', list);
+      res.send(list);
+    } catch (err) {
+      console.log('patch list err', err);
+      res.status(500).send(err);
+    }
+  });
+
   app.get('/api/lists/:id', requireLogin, async (req, res) => {
     const {id} = req.params;
     const {_id} = req.user;
     try {
       let list = await List.findOne({
-        _id: id, 
+        _id: id,
         _user: _id
       })
       .populate('_recipients')

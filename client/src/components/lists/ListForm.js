@@ -1,13 +1,22 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import _ from 'lodash';
-import {saveList} from '../../actions';
+import {saveList, unsetList, updateList} from '../../actions';
 
 import formFields from './formFields';
 import renderFields from '../../utils/renderFields';
 
 class ListForm extends Component {
+
+  static propTypes = {
+    mode: PropTypes.string.isRequired
+  };
+
+  static defaultProps = {
+    mode: 'new'
+  };
 
   constructor(props) {
     super(props);
@@ -15,9 +24,24 @@ class ListForm extends Component {
     this.handleResponse = this.handleResponse.bind(this);
   }
 
+  componentWillUnmount() {
+    this.props.unsetList();
+  }
+
   async handleSubmit(values) {
-    console.log('values', values);
-    this.props.saveList(values);
+    const {mode, list} = this.props;
+    switch(mode) {
+      case 'new':
+        this.props.saveList(values);
+        break;
+      case 'edit':
+        console.log('trying to update');
+        this.props.updateList(values, list._id);
+        break;
+      default:
+        console.log('need mode');
+        break;
+    }
   }
 
   //TODO update with msg Component
@@ -40,14 +64,14 @@ class ListForm extends Component {
         <form onSubmit={handleSubmit(this.handleSubmit)}>
           {renderFields(formFields)}
           <div>
-            <button 
-              className="btn waves-effect waves-light right" 
-              type="submit" 
+            <button
+              className="btn waves-effect waves-light right"
+              type="submit"
               name="action"
               disabled={submitting}
             >
-              Create
-              <i className="material-icons right">arrow_forward</i>
+              Save
+              <i className="material-icons right">forward</i>
             </button>
           </div>
         </form>
@@ -68,9 +92,9 @@ function validate(values) {
   return errors;
 }
 
-ListForm = connect(null, {saveList})(ListForm);
+ListForm = connect(null, {saveList, unsetList, updateList})(ListForm);
 
 export default reduxForm({
-  validate, 
+  validate,
   form: 'listForm'
 })(ListForm);
