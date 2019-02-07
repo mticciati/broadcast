@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import _ from 'lodash';
 import $ from 'jquery';
-import {saveBroadcast} from '../../actions';
+import {saveBroadcast, unsetBroadcastList} from '../../actions';
 import renderFields from '../../utils/renderFields';
 
 import Modal from '../shared/Modal';
+import ListList from '../lists/ListList';
 import formFields from './formFields';
 
 class BroadcastForm extends Component {
@@ -19,6 +20,10 @@ class BroadcastForm extends Component {
 
   componentDidMount() {
     $('.modal').modal();
+  }
+
+  componentWillUnmount() {
+    this.props.unsetBroadcastList()
   }
 
   async handleSubmit(values) {
@@ -40,7 +45,7 @@ class BroadcastForm extends Component {
   }
 
   render() {
-    const { submitting, handleSubmit, broadcastLists } = this.props;
+    const { submitting, handleSubmit } = this.props;
     return (
       <div>
         {this.handleResponse()}
@@ -56,7 +61,7 @@ class BroadcastForm extends Component {
               <i className="material-icons right">playlist_add</i>
             </a>
           </div>
-          <div>{_.map((broadcastLists), broadcastList => <p>{broadcastList.title}</p>)}</div>
+          <div><ListList mode="remove" /></div>
           <div>
             <button
               className="btn waves-effect waves-light right"
@@ -96,7 +101,7 @@ function mapStateToProps(state) {
   };
 }
 
-BroadcastForm = connect(mapStateToProps, {saveBroadcast})(BroadcastForm);
+BroadcastForm = connect(mapStateToProps, {saveBroadcast, unsetBroadcastList})(BroadcastForm);
 
 export default reduxForm({
   validate,

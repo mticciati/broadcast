@@ -37,8 +37,8 @@ class ListList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {lists, broadcastLists} = this.props;
-    console.log('broadcastLists', broadcastLists);
     if (broadcastLists) {
+      console.log('broadcastLists from did update', broadcastLists);
       if (prevProps.broadcastLists.length !== broadcastLists.length) {
         this.props.filterLists(lists, broadcastLists);
       }
@@ -59,6 +59,9 @@ class ListList extends Component {
       broadcastLists,
       mode
     } = this.props;
+
+    console.log('broadcastLists', broadcastLists);
+    console.log('mode', mode);
     switch(mode) {
       case 'add':
         return _.map(filteredLists, (list) => {

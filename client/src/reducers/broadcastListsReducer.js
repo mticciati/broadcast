@@ -14,7 +14,7 @@ export default (state = [], action) => {
     case REMOVE_LIST_FROM_BROADCAST:
       return _.map((state), list => list._id !== action.list_id);
     case UNSET_BROADCAST_LISTS:
-      return null;
+      return [];
     default:
       return state;
   }

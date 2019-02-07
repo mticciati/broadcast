@@ -120,12 +120,12 @@ export const removeRecipientFromList = (list_id, recipient_id) => async dispatch
 }
 
 export const addListToBroadcast = (list) => dispatch => {
-  console.log('list', list);
+  console.log('addListToBroadcastlist', list);
   dispatch({type: types.ADD_LIST_TO_BROADCAST, payload: list._id});
 }
 
 export const removeListFromBroadcast = (list) => dispatch => {
-  console.log('list', list);
+  console.log('removeListFromBroadcastlist', list);
   dispatch({type: types.REMOVE_LIST_FROM_BROADCAST, payload: list._id});
 }
 
